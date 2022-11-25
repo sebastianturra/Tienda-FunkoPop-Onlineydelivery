@@ -1,0 +1,11 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+div{
+    border: 1px dashed purple;
+    margin: 10px;
+    padding: 10px;
+}
