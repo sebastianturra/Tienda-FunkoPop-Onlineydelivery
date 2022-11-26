@@ -1,11 +1,19 @@
 /*
 Indice
+0. Declaraciones 
 1. Clase
 2. Array
 3. Variables
 4. Funciones
 5. Main
 */
+
+/*0. Declaraciones
+---------------------------------------------------------------------*/
+let contenedorHTML = document.getElementById('contenedor');
+let filtroHTML = document.getElementById('filtro');
+let productosHTML = document.getElementById('productos');
+let publicidadHTML = document.getElementById('publicidad');
 
 /*1. Clase
 ---------------------------------------------------------------------*/
@@ -117,18 +125,22 @@ let mostrarUnFunkoArray = () => {
     } 
 };
 
-let mostrarTodosFunkos = () => {
-    /* Cambiar por forEach 
-    -----------------------------------------------------------*/
+let mostrarTodosFunkos = () => {    
     let stringFunko = '';
-    for(const conteoFunkos of productosFunkos){
-        stringFunko += `Funko nombre:${conteoFunkos.nombre}\n
-        Funko valor:${conteoFunkos.valor}\n
-        Funko cantidad:${conteoFunkos.cantidad}\n
-        Funko imagen:${conteoFunkos.imagen}\n
-        Funko id:${conteoFunkos.id}\n
-        Funko fecha:${conteoFunkos.fecha}\n`
-    }
+    productosFunkos.forEach((productosFunkos) => {
+        stringFunko += `
+        <div class="card" style="width: 18rem;">
+            <img src="${productosFunkos.imagen}" class="card-img-top" alt="${productosFunkos.nombre}">
+                <div class="card-body">
+                    <h5 class="card-title">${productosFunkos.nombre}</h5>
+                    <span class="card-text">Stock: ${productosFunkos.cantidad}</span>
+                    <p class="card-text">Valor: ${productosFunkos.valor}</p>
+                    <a href="#" class="btn btn-primary">Añadir al carro</a>
+                </div>
+      </div>
+      `
+    });
+    productosHTML.innerHTML = stringFunko;
 
     console.log(stringFunko);
 }
@@ -149,7 +161,7 @@ let total = () => {
 ----------------------------------------------------------------------*/
 let agregarMas = "";
 let cantidadFunkoAgregar = '';
-
+/*
 do{
     cantidadFunkoAgregar = parseInt(prompt('Indique cantidad de funkos a agregar'));
     while(cantidadFunkoAgregar === 0 || isNaN(cantidadFunkoAgregar) || cantidadFunkoAgregar < 0 ){
@@ -168,14 +180,74 @@ do{
             agregarMas = prompt("¿Desea agregar más funkos, Sí ó no?").toLowerCase().trim();
         }
 }while(agregarMas !== 'no' );
-
-//mostrarTodosFunkos();
+*/
 //eliminarFunkoArray();
 //mostrarUnFunkoArray();
 //modificarFunkoArray();
 //total();
-/*
-productosFunkos.push({id:1,valor:10000,cantidad:10,imagen:"aa",nombre:"a",fecha:"2022/01/01"});
-productosFunkos.push({id:2,valor:20000,cantidad:20,imagen:"bb",nombre:"b",fecha:"2022/01/02"});
-productosFunkos.push({id:3,valor:30000,cantidad:30,imagen:"cc",nombre:"c",fecha:"2022/01/03"});
-*/
+
+productosFunkos = [{
+    id:1,
+    nombre: "ketchup",
+    valor: 99999,
+    cantidad: 99,
+    imagen: 'img/productoscompleto/ketchup.jpg'
+},
+{
+    id:2,
+    nombre: "Avocado",
+    valor: 11111,
+    cantidad: 11,
+    imagen: 'img/productoscompleto/avocado.png'
+},
+{
+    id:3,
+    nombre: "hotdog",
+    valor: 22222,
+    cantidad: 22,
+    imagen: 'img/productoscompleto/hotdog.png'
+},
+{
+    id:4,
+    nombre: "Mustard",
+    valor: 33333,
+    cantidad: 33,
+    imagen: 'img/productoscompleto/mustard.png'
+},
+{
+    id:5,
+    nombre: "Salchicha",
+    valor: 44444,
+    cantidad: 44,
+    imagen: 'img/productoscompleto/salchicha.png'
+},
+{
+    id:6,
+    nombre: "Aceite de oliva",
+    valor: 55555,
+    cantidad: 55,
+    imagen: 'img/productoscompleto/oliveoil.png'
+},
+{
+    id:7,
+    nombre: "pepper",
+    valor: 66666,
+    cantidad: 66,
+    imagen: 'img/productoscompleto/pepper.png'
+},
+{
+    id:8,
+    nombre: "Sal",
+    valor: 66666,
+    cantidad: 66,
+    imagen: 'img/productoscompleto/sal.png'
+},
+{
+    id:9,
+    nombre: "Tomate",
+    valor: 66666,
+    cantidad: 66,
+    imagen: 'img/productoscompleto/tomato.png'
+}];
+
+mostrarTodosFunkos();

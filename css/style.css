@@ -4,8 +4,65 @@
     padding: 0;
 }
 
-div{
+div,header,nav{
     border: 1px dashed purple;
-    margin: 10px;
-    padding: 10px;
+}
+
+#productos{
+    display: flex;
+    flex-wrap: wrap;
+
+    justify-content: space-around;
+}
+
+#productos > .card{
+    margin: 10px 0px;
+}
+
+#promocion{
+    padding: 10px 5px;
+}
+
+.promocion__img > img{
+    width: 100%;
+}
+
+#footer{
+    margin-bottom: 10px;
+}
+
+/* Grid area
+--------------------------------------------------------------------------------*/
+/* First mobile
+-----------------------------------------------------*/
+/* Tablet
+-----------------------------------------------------*/
+/* Desktop
+-----------------------------------------------------*/
+
+#filtro{
+    grid-area: filtro;
+}
+
+#productos{
+    grid-area: productos;
+}
+
+#publicidad{
+    grid-area: publicidad;
+}
+
+#main{
+    display: grid;
+
+    grid-template-columns: 20% 1fr 10%;
+    grid-template-rows: auto;
+
+    grid-template-areas: "filtro productos publicidad";
+
+    column-gap: 5px;
+
+    background-color: aquamarine;
+
+    margin-bottom: 10px;
 }
