@@ -10,10 +10,10 @@ Indice
 
 /*0. Declaraciones
 ---------------------------------------------------------------------*/
-let contenedorHTML = document.getElementById('contenedor');
-let filtroHTML = document.getElementById('filtro');
-let productosHTML = document.getElementById('productos');
-let publicidadHTML = document.getElementById('publicidad');
+let contenedorHTML = document.getElementById('contenedorIndex');
+let filtroHTML = document.getElementById('filtroIndex');
+let productosHTML = document.getElementById('productosIndex');
+let publicidadHTML = document.getElementById('publicidadIndex');
 
 /*1. Clase
 ---------------------------------------------------------------------*/
@@ -63,8 +63,6 @@ let agregarFunkoArray = (capitalizar) => {
 
     let productosFunkosAgregar = new Funko(id,nombre,valor,cantidad,imagen,fecha);
     productosFunkos.push(productosFunkosAgregar);
-
-    mostrarTodosFunkos();
 };
 
 let eliminarFunkoArray = () => {
@@ -77,8 +75,6 @@ let eliminarFunkoArray = () => {
         let funkoMap = productosFunkos.map((array) => array.nombre);
         let funkoIndex = funkoMap.indexOf(nombreFunko);
         productosFunkos.splice(funkoIndex,1);
-
-        mostrarTodosFunkos();
     }
 };
 
@@ -91,22 +87,18 @@ let modificarFunkoArray = () => {
     }else{
         let funkoMap = productosFunkos.map((array) => array.nombre);
         let funkoIndex = funkoMap.indexOf(nombreFunko);
-
-        mostrarTodosFunkos();
           
         productosFunkos[funkoIndex]["nombre"] = capitalizar(prompt("Ingresa el nombre del funko").toLowerCase().trim());
         productosFunkos[funkoIndex]["valor"] = Math.round(parseFloat(prompt("Ingresa el valor del funko")));
         productosFunkos[funkoIndex]["cantidad"] = parseInt(prompt("Ingresa la cantidad del funko"));
         productosFunkos[funkoIndex]["imagen"] = prompt("Indicar link de imagen");
 
-        mostrarUnFunkoArray();
     };
 };   
 
 let ubicarFunko = (nombreFunko) => {
 
 }
-
 let mostrarUnFunkoArray = () => {
     let nombreFunko = capitalizar((prompt("Indica el nombre del funko").toLowerCase().trim()));
     let funkoBoolean = productosFunkos.some((el) => el.nombre === nombreFunko);
@@ -129,7 +121,7 @@ let mostrarTodosFunkos = () => {
     let stringFunko = '';
     productosFunkos.forEach((productosFunkos) => {
         stringFunko += `
-        <div class="card" style="width: 18rem;">
+        <div class="card" style="width: 12rem;">
             <img src="${productosFunkos.imagen}" class="card-img-top" alt="${productosFunkos.nombre}">
                 <div class="card-body">
                     <h5 class="card-title">${productosFunkos.nombre}</h5>
@@ -141,8 +133,6 @@ let mostrarTodosFunkos = () => {
       `
     });
     productosHTML.innerHTML = stringFunko;
-
-    console.log(stringFunko);
 }
 
 let total = () => {
@@ -160,32 +150,37 @@ let total = () => {
 /*5. Main
 ----------------------------------------------------------------------*/
 let agregarMas = "";
+let accion = "";
 let cantidadFunkoAgregar = '';
-/*
-do{
-    cantidadFunkoAgregar = parseInt(prompt('Indique cantidad de funkos a agregar'));
-    while(cantidadFunkoAgregar === 0 || isNaN(cantidadFunkoAgregar) || cantidadFunkoAgregar < 0 ){
-        window.alert("Cantidad minima es 1");
-        cantidadFunkoAgregar = parseInt(prompt('Indique cantidad de funkos a agregar'));
-    }
 
-    for(let i = 0; i < cantidadFunkoAgregar; i++){
-        agregarFunkoArray(capitalizar);
+
+let operaciones = (accion) =>{
+    switch(accion){
+        case '1':
+            agregarFunkoArray(capitalizar);
+        break;
+        case '2':
+            mostrarTodosFunkos();
+        break;
+        case '0':
+            //Nada
+        break;
+        default:
+            window.alert("Dato incorrecto");
+        break;
     }
-    mostrarTodosFunkos();
-    
-    agregarMas = prompt("¿Desea agregar más funkos, Sí ó no?").toLowerCase().trim();
-    while(agregarMas === ''){
-            window.alert('Debe ingresar su respuesta');
-            agregarMas = prompt("¿Desea agregar más funkos, Sí ó no?").toLowerCase().trim();
-        }
-}while(agregarMas !== 'no' );
-*/
+}
+
+do{
+    accion = prompt('Indique el numero de la opción: 1) Agregar\n 2)Mostrar todos 0)salir');
+    operaciones(accion);
+}while(accion !== '0' );
+
 //eliminarFunkoArray();
 //mostrarUnFunkoArray();
 //modificarFunkoArray();
 //total();
-
+/*
 productosFunkos = [{
     id:1,
     nombre: "ketchup",
@@ -249,5 +244,4 @@ productosFunkos = [{
     cantidad: 66,
     imagen: 'img/productoscompleto/tomato.png'
 }];
-
-mostrarTodosFunkos();
+*/

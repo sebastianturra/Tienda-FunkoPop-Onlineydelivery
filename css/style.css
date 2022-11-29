@@ -8,61 +8,215 @@ div,header,nav{
     border: 1px dashed purple;
 }
 
-#productos{
+#productosIndex{
     display: flex;
     flex-wrap: wrap;
 
-    justify-content: space-around;
+    justify-content: space-evenly;
 }
 
-#productos > .card{
+#productosIndex > .card{
     margin: 10px 0px;
+    height: auto;
 }
 
-#promocion{
+#promocionIndex{
     padding: 10px 5px;
-}
-
-.promocion__img > img{
-    width: 100%;
 }
 
 #footer{
     margin-bottom: 10px;
 }
 
+/*-------------------------------------------------------------------------------- 
+Ajustar a mobile,tablet y desktop 
+---------------------------------------------------------------------------------*/
+/*
+#productosIndex > .card{
+    height: 50%;
+}
+*/
 /* Grid area
 --------------------------------------------------------------------------------*/
 /* First mobile
 -----------------------------------------------------*/
+
+#contenedorIndex{
+    display: grid;
+
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(5,auto);
+
+    grid-template-areas: 
+    "header"
+    "nav"
+    "promocion"
+    "main"
+    "footer"
+    ;
+
+    column-gap: 5px;
+
+    background-color: aquamarine;
+    
+    margin-bottom: 10px;
+}
+
+#mainIndex{
+    display: grid;
+
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(3,auto);
+
+    grid-template-areas: 
+    "filtro"
+    "productos"
+    "publicidad"
+    ;
+
+    row-gap: 5px;
+
+    background-color: rgb(129, 127, 255);
+}
+
+#Header{
+    grid-area: header;
+}
+
+#nav{
+    grid-area: nav;
+}
+
+#mainIndex{
+    grid-area: main;
+}
+
+#filtroIndex{
+    grid-area: filtro;
+}
+
+#promocionIndex{
+    grid-area: promocion;
+}
+
+#productosIndex{
+    grid-area: productos;
+}
+
+#publicidadIndex{
+    grid-area: publicidad;
+}
+
+#footer{
+    grid-area: footer;
+}
+
+#publicidadIndex{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-content: space-evenly;
+    padding: 10px 0px;
+    padding-left: 10px;
+}
+
+#publicidadIndex > img{
+    width: 35%;
+    margin-bottom: 10px;
+    margin-right: 10px;
+}
+
+#promocionIndex .promocion__img > img{
+    width:100%
+}
+
 /* Tablet
 -----------------------------------------------------*/
 /* Desktop
 -----------------------------------------------------*/
 
-#filtro{
-    grid-area: filtro;
-}
+@media (min-width:992px){
+    #contenedorIndex{
+        display: grid;
 
-#productos{
-    grid-area: productos;
-}
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(5,auto);
 
-#publicidad{
-    grid-area: publicidad;
-}
+        grid-template-areas: 
+        "header"
+        "nav"
+        "promocion"
+        "main"
+        "footer"
+        ;
 
-#main{
-    display: grid;
+        column-gap: 5px;
 
-    grid-template-columns: 20% 1fr 10%;
-    grid-template-rows: auto;
+        background-color: aquamarine;
+    
+        margin-bottom: 10px;
+    }
 
-    grid-template-areas: "filtro productos publicidad";
+    #mainIndex{
+        display: grid;
 
-    column-gap: 5px;
+        grid-template-columns: 15% 1fr 15%;
+        grid-template-rows: auto;
 
-    background-color: aquamarine;
+        grid-template-areas: "filtro productos publicidad";
 
-    margin-bottom: 10px;
+        column-gap: 5px;
+
+        background-color: aquamarine;
+    }
+
+    #Header{
+        grid-area: header;
+    }
+    
+    #nav{
+        grid-area: nav;
+    }
+    
+    #filtroIndex{
+        grid-area: filtro;
+    }
+    
+    #promocionIndex{
+        grid-area: promocion;
+    }
+    
+    #productosIndex{
+        grid-area: productos;
+    }
+    
+    #publicidadIndex{
+        grid-area: publicidad;
+    }
+    
+    #footer{
+        grid-area: footer;
+    }
+
+    #publicidadIndex{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-content: space-between;
+        padding: 10px 0px;
+        padding-left: 10px;
+    }
+    
+    #publicidadIndex > img{
+        width: 70%;
+        margin-bottom: 10px;
+        margin-right: 10px;
+    }
+
+    #productosIndex > .card{
+        height: fit-content;
+    }
+    
 }
