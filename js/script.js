@@ -5,7 +5,8 @@ Indice
 2. Array
 3. Variables
 4. Funciones
-5. Main
+5. Eventos
+6. Main
 */
 
 /*0. Declaraciones
@@ -14,7 +15,9 @@ let contenedorHTML = document.getElementById('contenedorIndex');
 let filtroHTML = document.getElementById('filtroIndex');
 let productosHTML = document.getElementById('productosIndex');
 let publicidadHTML = document.getElementById('publicidadIndex');
-
+let inputSearch = document.getElementById('input-search');
+let contenedorCarrito = document.getElementById('contenedorCarrito');
+                       
 /*1. Clase
 ---------------------------------------------------------------------*/
 class Funko{
@@ -28,12 +31,23 @@ class Funko{
     }
 }
 
+class Carrito{
+    constructor(id,nombre,valor,cantidad){
+        this.id = id;
+        this.nombre = nombre;
+        this.valor = valor;
+        this.cantidad = cantidad;
+    }
+}
+
 /*2. Array 
 ---------------------------------------------------------------------*/
 let productosFunkos = [];
+let carritoFunkos = [];
 
 /*3. Variables default 
 -------------------------------------------------------------------- */
+let id = '';
 let nombre = "";
 let valor = "";
 let cantidad = "";
@@ -41,8 +55,8 @@ let imagen = "";
 let fecha = "";
 
 /*4. Funciones
--------------------------------------------------------------------- */
-//Texto
+---------------------------------------------------------------------------------------- */
+//Otros
 let capitalizar = (texto) => {
     let textoChart = texto.charAt(0).toUpperCase();
     let textoSlice = texto.slice(1);
@@ -50,7 +64,10 @@ let capitalizar = (texto) => {
     return textoConcatenacion;
 }
 
+/* Funciones clase funko *
+----------------------------------------------------------- */
 //CRUD Funko
+/*
 let agregarFunkoArray = (capitalizar) => {
     let cantidadFunkos = productosFunkos.length;
     id = cantidadFunkos+1;
@@ -108,51 +125,131 @@ let mostrarUnFunkoArray = () => {
     }else{
         let funkoMap = productosFunkos.map((array) => array.nombre);
         let funkoIndex = funkoMap.indexOf(nombreFunko);
-       /* productosFunkos.slice(funkoIndex,(funkoIndex+1)); */
-       let findFunko = productosFunkos.find((array) => array.id == (funkoIndex+1));
-       console.log("Funko:\n");
-       for(const valor in findFunko){
+        let findFunko = productosFunkos.find((array) => array.id == (funkoIndex+1));
+        console.log("Funko:\n");
+        for(const valor in findFunko){
             console.log(findFunko[valor]);
-       }
+        }
     } 
 };
-
-let mostrarTodosFunkos = () => {    
-    let stringFunko = '';
-    productosFunkos.forEach((productosFunkos) => {
-        stringFunko += `
-        <div class="card" style="width: 12rem;">
-            <img src="${productosFunkos.imagen}" class="card-img-top" alt="${productosFunkos.nombre}">
-                <div class="card-body">
-                    <h5 class="card-title">${productosFunkos.nombre}</h5>
-                    <span class="card-text">Stock: ${productosFunkos.cantidad}</span>
-                    <p class="card-text">Valor: ${productosFunkos.valor}</p>
-                    <a href="#" class="btn btn-primary">Añadir al carro</a>
-                </div>
-      </div>
-      `
-    });
-    productosHTML.innerHTML = stringFunko;
-}
 
 let total = () => {
     let acumuluador = 0;
 
-    /* Transformarlo a un reduce 
-    -----------------------------------------------------------------------------------*/
-    for(const funkoTotal of productosFunkos){
-        acumuluador += funkoTotal.valor*funkoTotal.cantidad;
-    }
+    acumuluador = productosFunkos.reduce((acumulador,elemento) => acumulador+(elemento.valor*elemento.cantidad),0)
 
-    console.log(`El total de los productos es ${acumuluador.toString()}`);
+    console.log(`El total de los productos es ${acumuluador}`);
+}
+*/
+
+let mostrarTodosFunkos = (array,contenedor) => {    
+    let stringFunko = '';
+
+    array.forEach((producto) => {
+        stringFunko += `
+        <div class="card" style="width: 12rem;">
+            <img src="${producto.imagen}" class="card-img-top" alt="${producto.nombre}">
+                <div class="card-body">
+                    <h5 class="card-title">${producto.nombre}</h5>
+                    <span class="card-text">Stock: ${producto.cantidad}</span>
+                    <p class="card-text">Valor: ${producto.valor}</p>
+                    <a href="#" onclick='agregarCarrito(${producto.id})' class="btn btn-primary">Añadir al carro</a>
+                </div>
+      </div>
+      `
+    });
+    contenedor.innerHTML = stringFunko;
 }
 
-/*5. Main
+/* Funciones clase carrito *
+---------------------------------------------------------------------------------------------*/
+let agregarCarrito = (id) => {
+    if(!id){
+        window.alert('id no definida');
+        console.log('id no definida');
+        return
+    }
+
+    const producto = productosFunkos.find((el) => el.id === id);
+
+    if(producto){
+        let funkoCarrito = new Carrito(producto.id,producto.nombre,producto.valor,1);
+
+            if(carritoFunkos.some((el) => el.id === id)){
+               const funkoFind = carritoFunkos.find((el) => el.id === id);
+               carritoFunkos = carritoFunkos.filter((el) => el.id !== funkoFind.id);
+               carritoFunkos.push(new Carrito(funkoFind.id,funkoFind.nombre,funkoFind.valor,funkoFind.cantidad+1));
+    
+            }else{
+                carritoFunkos.push(funkoCarrito); 
+    
+            }
+    }   
+    console.log(carritoFunkos);
+};
+
+let busqueda = () => {
+    
+}
+
+let elimminar = () => {
+    
+}
+
+let modificar = () => {
+    
+}
+
+let totalCarrito = () =>{
+
+}
+
+let mostrarCarrito = () => {
+    let acumulador = '';
+    let iterador = 1;
+
+    carritoFunkos.forEach((el) => {
+        acumulador += `
+        <tr>
+        <td>${iterador}</td>
+        <td>${el.id}</td>
+        <td>${el.nombre}</td>
+        <td>${el.cantidad }</td>
+        <td>${el.valor } </td>
+        <td>${el.valor*el.cantidad}</td>
+        <td>Eliminar(id)|masTarde(id))</td>
+        </tr>
+        `
+        iterador++;
+    });
+
+    contenedorCarrito.innerHTML = acumulador;
+}
+
+/*5. Eventos
+----------------------------------------------------------------------*/
+let handlerEvent = (e) =>{
+
+    /* isNan(){
+    e.preventdefault();
+    }
+    */
+    
+    const filtrado = e.target.value;
+    console.log(filtrado);
+
+    const array = productosFunkos.filter((producto) => producto.nombre.includes(capitalizar(filtrado.toLowerCase().trim())))
+
+    mostrarTodosFunkos(array,productosHTML);
+}
+
+inputSearch.addEventListener('input', handlerEvent);
+
+/*6. Main
 ----------------------------------------------------------------------*/
 let agregarMas = "";
 let accion = "";
 let cantidadFunkoAgregar = '';
-
 
 let operaciones = (accion) =>{
     switch(accion){
@@ -171,77 +268,69 @@ let operaciones = (accion) =>{
     }
 }
 
+/*
 do{
     accion = prompt('Indique el numero de la opción: 1) Agregar\n 2)Mostrar todos 0)salir');
     operaciones(accion);
 }while(accion !== '0' );
+*/
 
-//eliminarFunkoArray();
-//mostrarUnFunkoArray();
-//modificarFunkoArray();
-//total();
-/*
 productosFunkos = [{
     id:1,
-    nombre: "ketchup",
+    nombre: "America Chavez",
     valor: 99999,
     cantidad: 99,
-    imagen: 'img/productoscompleto/ketchup.jpg'
+    imagen: 'img/productos/AmericaChavez.webp'
 },
 {
     id:2,
-    nombre: "Avocado",
+    nombre: "Bb8",
     valor: 11111,
     cantidad: 11,
-    imagen: 'img/productoscompleto/avocado.png'
+    imagen: 'img/productos/Bb8.webp'
 },
 {
     id:3,
-    nombre: "hotdog",
+    nombre: "Dr. Strange",
     valor: 22222,
     cantidad: 22,
-    imagen: 'img/productoscompleto/hotdog.png'
+    imagen: 'img/productos/DrStrange.webp'
 },
 {
     id:4,
-    nombre: "Mustard",
+    nombre: "Therizinosaurus",
     valor: 33333,
     cantidad: 33,
-    imagen: 'img/productoscompleto/mustard.png'
+    imagen: 'img/productos/Therizinosaurus.webp'
 },
 {
     id:5,
-    nombre: "Salchicha",
+    nombre: "La cenisienta",
     valor: 44444,
     cantidad: 44,
-    imagen: 'img/productoscompleto/salchicha.png'
+    imagen: 'img/productos/Lacenisienta.webp'
 },
 {
     id:6,
-    nombre: "Aceite de oliva",
+    nombre: "Laroca",
     valor: 55555,
     cantidad: 55,
-    imagen: 'img/productoscompleto/oliveoil.png'
+    imagen: 'img/productos/Laroca.webp'
 },
 {
     id:7,
-    nombre: "pepper",
+    nombre: "Rocky",
     valor: 66666,
     cantidad: 66,
-    imagen: 'img/productoscompleto/pepper.png'
+    imagen: 'img/productos/Rocky.webp'
 },
 {
     id:8,
-    nombre: "Sal",
+    nombre: "Sulley",
     valor: 66666,
     cantidad: 66,
-    imagen: 'img/productoscompleto/sal.png'
+    imagen: 'img/productos/Sulley.webp'
 },
-{
-    id:9,
-    nombre: "Tomate",
-    valor: 66666,
-    cantidad: 66,
-    imagen: 'img/productoscompleto/tomato.png'
-}];
-*/
+];
+
+mostrarTodosFunkos(productosFunkos,productosHTML)

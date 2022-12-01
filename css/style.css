@@ -4,10 +4,6 @@
     padding: 0;
 }
 
-div,header,nav{
-    border: 1px dashed purple;
-}
-
 #productosIndex{
     display: flex;
     flex-wrap: wrap;
@@ -20,14 +16,15 @@ div,header,nav{
     height: auto;
 }
 
-#promocionIndex{
-    padding: 10px 5px;
-}
-
 #footer{
-    margin-bottom: 10px;
+    padding: 0x 10px;
+    padding-bottom: 10px;
 }
 
+#contenedorIndex nav{
+    display: flex;
+    justify-content: space-between;
+}
 /*-------------------------------------------------------------------------------- 
 Ajustar a mobile,tablet y desktop 
 ---------------------------------------------------------------------------------*/
@@ -40,28 +37,6 @@ Ajustar a mobile,tablet y desktop
 --------------------------------------------------------------------------------*/
 /* First mobile
 -----------------------------------------------------*/
-
-#contenedorIndex{
-    display: grid;
-
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(5,auto);
-
-    grid-template-areas: 
-    "header"
-    "nav"
-    "promocion"
-    "main"
-    "footer"
-    ;
-
-    column-gap: 5px;
-
-    background-color: aquamarine;
-    
-    margin-bottom: 10px;
-}
-
 #mainIndex{
     display: grid;
 
@@ -76,27 +51,11 @@ Ajustar a mobile,tablet y desktop
 
     row-gap: 5px;
 
-    background-color: rgb(129, 127, 255);
-}
-
-#Header{
-    grid-area: header;
-}
-
-#nav{
-    grid-area: nav;
-}
-
-#mainIndex{
-    grid-area: main;
+    background-color: rgb(129 127 255 / 0.5);
 }
 
 #filtroIndex{
     grid-area: filtro;
-}
-
-#promocionIndex{
-    grid-area: promocion;
 }
 
 #productosIndex{
@@ -105,10 +64,6 @@ Ajustar a mobile,tablet y desktop
 
 #publicidadIndex{
     grid-area: publicidad;
-}
-
-#footer{
-    grid-area: footer;
 }
 
 #publicidadIndex{
@@ -127,64 +82,26 @@ Ajustar a mobile,tablet y desktop
     margin-right: 10px;
 }
 
-#promocionIndex .promocion__img > img{
-    width:100%
-}
-
 /* Tablet
 -----------------------------------------------------*/
 /* Desktop
 -----------------------------------------------------*/
-
 @media (min-width:992px){
-    #contenedorIndex{
-        display: grid;
-
-        grid-template-columns: 1fr;
-        grid-template-rows: repeat(5,auto);
-
-        grid-template-areas: 
-        "header"
-        "nav"
-        "promocion"
-        "main"
-        "footer"
-        ;
-
-        column-gap: 5px;
-
-        background-color: aquamarine;
-    
-        margin-bottom: 10px;
-    }
-
     #mainIndex{
         display: grid;
 
         grid-template-columns: 15% 1fr 15%;
-        grid-template-rows: auto;
+        grid-template-rows: 1fr;
 
         grid-template-areas: "filtro productos publicidad";
 
         column-gap: 5px;
-
-        background-color: aquamarine;
+        
+        background-color: rgb(127 255 212 / 0.5);
     }
 
-    #Header{
-        grid-area: header;
-    }
-    
-    #nav{
-        grid-area: nav;
-    }
-    
     #filtroIndex{
         grid-area: filtro;
-    }
-    
-    #promocionIndex{
-        grid-area: promocion;
     }
     
     #productosIndex{
@@ -193,10 +110,6 @@ Ajustar a mobile,tablet y desktop
     
     #publicidadIndex{
         grid-area: publicidad;
-    }
-    
-    #footer{
-        grid-area: footer;
     }
 
     #publicidadIndex{
@@ -218,5 +131,4 @@ Ajustar a mobile,tablet y desktop
     #productosIndex > .card{
         height: fit-content;
     }
-    
 }
