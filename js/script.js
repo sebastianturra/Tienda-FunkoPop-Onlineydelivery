@@ -137,21 +137,17 @@ let capitalizar = (texto) => {
 let agregarFunkoArray = (capitalizar) => {
     let cantidadFunkos = productosFunkos.length;
     id = cantidadFunkos+1;
-
     nombre = capitalizar(prompt("Ingresa el nombre del funko").toLowerCase().trim());
     valor = Math.round(parseFloat(prompt("Ingresa el valor del funko")));
     cantidad = parseInt(prompt("Ingresa la cantidad del funko"));
     imagen = prompt("Indicar link de imagen");
     fecha = new Date().toLocaleDateString();
-
     let productosFunkosAgregar = new Funko(id,nombre,valor,cantidad,imagen,fecha);
     productosFunkos.push(productosFunkosAgregar);
 };
-
 let eliminarFunkoArray = () => {
     let nombreFunko = capitalizar(prompt("Indica el nombre del funko").toLowerCase().trim());
     let funkoSome = productosFunkos.some((arreglo) => arreglo.nombre === nombreFunko);
-
     if(!funkoSome){
         window.alert("Funko no encontrado");
     }else{
@@ -160,11 +156,9 @@ let eliminarFunkoArray = () => {
         productosFunkos.splice(funkoIndex,1);
     }
 };
-
 let modificarFunkoArray = () => {
     let nombreFunko = capitalizar(prompt("Indica el nombre del funko").toLowerCase().trim());
     let funkoBoolean = productosFunkos.some((el) => el.nombre === nombreFunko);
-
     if(!funkoBoolean){
         window.alert("No se encuentra el funko");
     }else{
@@ -175,17 +169,13 @@ let modificarFunkoArray = () => {
         productosFunkos[funkoIndex]["valor"] = Math.round(parseFloat(prompt("Ingresa el valor del funko")));
         productosFunkos[funkoIndex]["cantidad"] = parseInt(prompt("Ingresa la cantidad del funko"));
         productosFunkos[funkoIndex]["imagen"] = prompt("Indicar link de imagen");
-
     };
 };   
-
 let ubicarFunko = (nombreFunko) => {
-
 }
 let mostrarUnFunkoArray = () => {
     let nombreFunko = capitalizar((prompt("Indica el nombre del funko").toLowerCase().trim()));
     let funkoBoolean = productosFunkos.some((el) => el.nombre === nombreFunko);
-
     if(!funkoBoolean){
         window.alert("No se encuentra el funko");
     }else{
@@ -198,12 +188,9 @@ let mostrarUnFunkoArray = () => {
         }
     } 
 };
-
 let total = () => {
     let acumuluador = 0;
-
     acumuluador = productosFunkos.reduce((acumulador,elemento) => acumulador+(elemento.valor*elemento.cantidad),0)
-
     console.log(`El total de los productos es ${acumuluador}`);
 }
 */
@@ -219,10 +206,10 @@ let mostrarTodosFunkos = (array,contenedor) => {
 
     arrayFunkos.forEach((producto) => {
         stringFunko += `
-        <div class="card" style="width: 12rem;">
+        <div class="card" style="width: 21rem;">
             <img src="${producto.imagen}" class="card-img-top" alt="${producto.nombre}">
                 <div class="card-body">
-                    <h5 class="card-title">${producto.nombre}</h5>
+                    <h3 class="card-title">${producto.nombre}</h5>
                     <span class="card-text">Stock: ${producto.cantidad}</span>
                     <p class="card-text">Valor: ${producto.valor}</p>
                     <a href="#" onclick='agregarCarrito(${producto.id})' class="btn btn-primary">Añadir al carro</a>
@@ -342,22 +329,17 @@ const limpiarArrayLocalStorage = (array) => {
 const arrayVisitaMasTarde = () => {}
 /*
 const masTarde = (id) => {
-
     const carroVisita = JSON.parse(localStorage.getItem(carritoStorageVisita));
     const carromasTarde = JSON.parse(localStorage.getItem(carritoStorageMasTarde));
-
     //Encuentro index
     let indexFunko = carroVisita.findIndex((el) => el.id === id);
-
     //Extraigo el funko deseado
     let sliceFunko = carritoFunkos.slice(indexFunko,(indexFunko+1));
-
     //Creo un array con sin el funko desaeado
     const filterFunko = carroVisita.filter((el) => el.id !== sliceFunko[0].id);
     carritoFunkos = filterFunko;
     
     localStorage.setItem(carritoStorageVisita,JSON.stringify(filterFunko));
-
     mostrarCarrito();
         
 }

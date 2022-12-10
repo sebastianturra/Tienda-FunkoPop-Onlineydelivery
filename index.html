@@ -13,30 +13,31 @@
     <title>Funko pop</title>
 </head>
 <body>
+    <div class="contactoIndex">
+        <p>Escribenos por tu consulta</p>
+    </div>
     <!-- No glutter; elimina margenes -->
     <div id="contenedorIndex" class="container-fluid"> 
+        <!-- boton contactanos -->
         <!-- Inico nav -->        
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
               <div>    
-                <a class="navbar-brand" href="#">Funko Pop</a>
+                <a href="#"><p>Funko Pop</p></a>
               </div>  
+              
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
                 </button>
 
               <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <form class="d-flex">
-                  <input id="input-search" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                  <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
                 <div class="mx-2">
                     <button id="mostrarCarrito" onclick="mostrarCarrito()" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         <i class="fa-solid fa-cart-shopping"></i>
-                      </button>
-                </div>
+                    </button>
+                </div>      
                 <div>    
-                <a href="#">Iniciar sesión</a>
-              </div>
+                    <a href="#">Iniciar sesión</a>
+                </div>
               </div>
         </nav>
         <!-- Fin nav -->  
@@ -50,7 +51,14 @@
         </div>
         <!-- Bloque de grid -->
         <div id="mainIndex">
-            <div id="filtroIndex"><button onclick="arrayVisita()">Array visita</button></div>
+            <div id="filtroIndex" class="row">
+                <div class="filtroIndex__buscador col">
+                    <form action="">
+                        <label for="input">Buscador</label>
+                        <input id="input-search" type="search" placeholder="Ingrese funko a buscar">
+                    </form>
+                </div>
+            </div>
             <div id="productosIndex"></div> 
             <div id="publicidadIndex">      
                 <img src="img/publicidad/icon1.png" alt="icon1">
@@ -61,14 +69,44 @@
             </div>
         </div> 
         <div id="footer" class="row">
-            <div class="col">
-                <span>Mapa del sitio</span>
+            <div class="col-md-6 col-lg-3 footer__contenedor">
+                <p>Nosotros</p>
+                <ul>
+                    <li><a href="#">Inicio</a></li>
+                    <li><a href="#">¿Quienes somos?</a></li>
+                    <li><a href="#">Contáctanos</a></li>
+                </ul>
+            </div> 
+            <div class="col-md-6 col-lg-3 footer__contenedor">
+                <p>Productos</p>
+                <ul>
+                    <li><a href="#">Funkos</a></li>
+                    <li><a href="#">Tablet</a></li>
+                    <li><a href="#">Smartphones</a></li>
+                    <li><a href="#">Computadores</a></li>
+                </ul>
             </div>  
-            <div class="col">
-                <span>Contacto</span>
+            <div class="col-md-6 col-lg-3 footer__contenedor">
+                <p>Servicio al cliente</p>
+                <ul>
+                    <li><a href="#">Envios</a>/li>
+                    <li><a href="#">Medios de pago</a></li>
+                    <li><a href="#">Garantias</a></li>
+                    <li><a href="#">Politicas de reembolso</a></li>
+                </ul>
             </div>
-            <div class="col">
-                <span>Redes sociales</span>
+            <div class="col-md-6 col-lg-3 footer__contenedor">
+                <p>Mantengamos contacto</p>
+                <ul>
+                    <li><a href="mailTo">sebastianturra@gmail.com</a></li>
+                    <li>Loncoche 879 Arica, Chile</li>
+                </ul>
+                <div class="footer__logos">
+                    <a href=""><i class="fa-brands fa-facebook"></i></a>
+                    <a href=""><i class="fa-brands fa-instagram"></i></a>
+                    <a href=""><i class="fa-brands fa-linkedin-in"></i></a>
+                    <a href=""><i class="fa-brands fa-whatsapp"></i></a>
+                </div>
             </div>  
         </div> 
     </div> 
