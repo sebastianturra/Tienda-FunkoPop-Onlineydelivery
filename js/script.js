@@ -24,15 +24,14 @@ const carritoStorageVisita = 'carritoVisita';
 const carritoStorageMasTarde = 'carritoVisitaMasTarde';
 const listaProductos = 'listaProductos';
 
-
 /*1. Clase
 ---------------------------------------------------------------------*/
 class Funko{
     constructor(id,nombre,valor,cantidad,imagen,fecha){
         this.id = id;
         this.nombre = nombre;
-        this.valor = valor;
-        this.cantidad = cantidad;
+        this.valor = parseInt(valor);
+        this.cantidad = parseInt(cantidad);
         this.imagen = imagen;
         this.fecha = fecha || new Date().toLocaleDateString();
     }
@@ -42,14 +41,22 @@ class Carrito{
     constructor(id,nombre,valor,cantidad){
         this.id = id;
         this.nombre = nombre;
-        this.valor = valor;
-        this.cantidad = cantidad;
+        this.valor = parseInt(valor);
+        this.cantidad = parseInt(cantidad);
     }
 }
 
 /*2. Array 
 ---------------------------------------------------------------------*/
 let carritoFunkos = [];
+
+let guardarLocal = (propiedad,valor) => { localStorage.setItem(propiedad,valor) }
+let guardarSession = (propiedad,valor) => { sessionStorage.setItem(propiedad,valor) }
+
+/*
+let recuperarLocal = 
+let recuperarSession =
+*/
 
 let productosFunkos = [{
     id:1,
@@ -198,25 +205,39 @@ let total = () => {
 let mostrarTodosFunkos = (array,contenedor) => {   
 
     let arrayFunkos = JSON.parse(sessionStorage.getItem(array));
-    if(!arrayFunkos){
-        arrayFunkos = array;
-    }
+
+    arrayFunkos = arrayFunkos || [
+        {
+        id:1,
+        nombre: "America Chavez",
+        valor: 99999,
+        cantidad: 99,
+        imagen: 'img/productos/AmericaChavez.webp'
+    }];
 
     let stringFunko = '';
 
     arrayFunkos.forEach((producto) => {
+        
+        const { id:funkoId, 
+            nombre:funkoNombre, 
+            valor:funkoValor, 
+            cantidad:funkoCantidad,
+            imagen:funkoImagen} = producto;
+
         stringFunko += `
         <div class="card" style="width: 21rem;">
-            <img src="${producto.imagen}" class="card-img-top" alt="${producto.nombre}">
+            <img src="${funkoImagen}" class="card-img-top" alt="${funkoNombre}">
                 <div class="card-body">
-                    <h3 class="card-title">${producto.nombre}</h5>
-                    <span class="card-text">Stock: ${producto.cantidad}</span>
-                    <p class="card-text">Valor: ${producto.valor}</p>
-                    <a href="#" onclick='agregarCarrito(${producto.id})' class="btn btn-primary">Añadir al carro</a>
+                    <h3 class="card-title">${funkoNombre}</h5>
+                    <span class="card-text">Stock: ${funkoCantidad}</span>
+                    <p class="card-text">Valor: ${funkoValor}</p>
+                    <a href="#" onclick='agregarCarrito(${funkoId})' class="btn btn-primary">Añadir al carro</a>
                 </div>
       </div>
       `
     });
+
     contenedor.innerHTML = stringFunko;
 }
 
@@ -226,15 +247,15 @@ const agregarCarrito = (id) => {
     
     const arrayFunkos = JSON.parse(sessionStorage.getItem(listaProductos));
     const carroVisita = JSON.parse(localStorage.getItem(carritoStorageVisita));
-
+/*-------------------------------------------------------&& - || - ? -------------------------------------------------------*/    
     if(!id){
         window.alert('id no definida');
         console.log('id no definida');
         return
     }
-
+/*-------------------------------------------------------&& - || - ? -------------------------------------------------------*/
     const producto = arrayFunkos.find((el) => el.id === id);
-
+/*-------------------------------------------------------&& - || - ? -------------------------------------------------------*/
     if(producto){
         let funkoCarrito = new Carrito(producto.id,producto.nombre,producto.valor,1);
 
@@ -255,7 +276,8 @@ const agregarCarrito = (id) => {
                      localStorage.setItem(carritoStorageVisita,JSON.stringify(carritoFunkos));
                  }
             }
-    }   
+    }  
+/*-------------------------------------------------------&& - || - ? -------------------------------------------------------*/ 
     console.log(carritoFunkos);
     console.log(JSON.parse(localStorage.getItem(carritoStorageVisita)));
 };
@@ -268,15 +290,21 @@ const mostrarCarrito = () => {
     let iterador = 1;
 
     carritoVisitaLocal.forEach((el) => {
+
+        const { id:funkoId, 
+            nombre:funkoNombre, 
+            valor:funkoValor, 
+            cantidad:funkoCantidad} = el;
+
         acumulador += `
         <tr>
         <td>${iterador}</td>
-        <td>${el.id}</td>
-        <td>${el.nombre}</td>
-        <td>${el.cantidad }</td>
-        <td>${el.valor } </td>
-        <td>${el.valor*el.cantidad}</td>
-        <td><button onclick='eliminar(${el.id})'><i class="fa-solid fa-trash"></i></button>|<button onclick='masTarde(${el.id})'>
+        <td>${funkoId}</td>
+        <td>${funkoNombre}</td>
+        <td>${funkoCantidad}</td>
+        <td>${funkoValor} </td>
+        <td>${funkoValor*funkoCantidad}</td>
+        <td><button onclick='eliminar(${funkoId})'><i class="fa-solid fa-trash"></i></button>|<button onclick='masTarde(${funkoId})'>
         <i class="fa-regular fa-clock"></i></button></td>
         </tr>
         `
@@ -320,10 +348,7 @@ const eliminar = (id) => {
 const limpiarArrayLocalStorage = (array) => {
     let arrayExtraido = JSON.parse(localStorage.getItem(array));
 
-    if(!arrayExtraido.length){
-        localStorage.removeItem(array);
-        carritoFunkos = [];
-    }
+    !arrayExtraido.length && localStorage.removeItem(array),carritoFunkos = [];     
 }
 
 const arrayVisitaMasTarde = () => {}
@@ -344,22 +369,21 @@ const masTarde = (id) => {
         
 }
 */
+
 const busqueda = () => {
 }
     
 const modificar = () => {
-    
 }
 
 const totalCarrito = () =>{
-
 }
 
 /*5. Eventos
 ----------------------------------------------------------------------*/
 let handlerEvent = (e) =>{
     const arrayFunkosEvent = JSON.parse(sessionStorage.getItem(listaProductos));
-    /* isNan(){
+    /* isNan(e.target.value){
     e.preventdefault();
     }
     */
@@ -402,8 +426,5 @@ do{
     operaciones(accion);
 }while(accion !== '0' );
 */
-
-/* Poner un localstorage
---------------------------------------------------------------------------------*/
 
 mostrarTodosFunkos(listaProductos,productosHTML);
