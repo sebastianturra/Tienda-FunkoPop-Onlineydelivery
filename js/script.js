@@ -205,15 +205,9 @@ let total = () => {
 let mostrarTodosFunkos = (array,contenedor) => {   
 
     let arrayFunkos = JSON.parse(sessionStorage.getItem(array));
+    console.log(arrayFunkos);
 
-    arrayFunkos = arrayFunkos || [
-        {
-        id:1,
-        nombre: "America Chavez",
-        valor: 99999,
-        cantidad: 99,
-        imagen: 'img/productos/AmericaChavez.webp'
-    }];
+    arrayFunkos = arrayFunkos || array;
 
     let stringFunko = '';
 

@@ -5,7 +5,7 @@
     font-size: 62.5%;
 }
 
-/* Color Theme Swatches in RGBA 
+/* Color Theme Swatches in RGBA - AdobeColor
 Verde .on*arte---marketplace-1-rgba { color: rgba(6, 114, 2, 1); }
 Blanco .on*arte---marketplace-2-rgba { color: rgba(216, 207, 199, 1); }
 Cafe claro .on*arte---marketplace-3-rgba { color: rgba(165, 130, 109, 1); }
@@ -83,7 +83,6 @@ i{
 #contenedorIndex nav{
     padding: 0 10px;
 }
-
 
 #filtroIndex .filtroIndex__buscador form input{
     width: 100%;
