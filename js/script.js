@@ -53,10 +53,8 @@ let carritoFunkos = [];
 let guardarLocal = (propiedad,valor) => { localStorage.setItem(propiedad,valor) }
 let guardarSession = (propiedad,valor) => { sessionStorage.setItem(propiedad,valor) }
 
-/*
-let recuperarLocal = 
-let recuperarSession =
-*/
+let recuperarLocal = (propiedad) => JSON.parse(localStorage.getItem(propiedad))
+let recuperarSession = (propiedad) => JSON.parse(sessionStorage.getItem(propiedad)) 
 
 let productosFunkos = [{
     id:1,
@@ -116,7 +114,7 @@ let productosFunkos = [{
 },
 ];
 
-sessionStorage.setItem(listaProductos,JSON.stringify(productosFunkos));
+guardarSession(listaProductos,JSON.stringify(productosFunkos));
 
 /*3. Variables default 
 -------------------------------------------------------------------- */
@@ -126,121 +124,55 @@ let valor = "";
 let cantidad = "";
 let imagen = "";
 let fecha = "";
+let stringFunko = '';
 
 /*4. Funciones
 ---------------------------------------------------------------------------------------- */
-//Otros
-let capitalizar = (texto) => {
-    let textoChart = texto.charAt(0).toUpperCase();
-    let textoSlice = texto.slice(1);
-    let textoConcatenacion = textoChart+textoSlice;
-    return textoConcatenacion;
-}
-
 /* Funciones clase funko *
 ----------------------------------------------------------- */
-//CRUD Funko
-/*
-let agregarFunkoArray = (capitalizar) => {
-    let cantidadFunkos = productosFunkos.length;
-    id = cantidadFunkos+1;
-    nombre = capitalizar(prompt("Ingresa el nombre del funko").toLowerCase().trim());
-    valor = Math.round(parseFloat(prompt("Ingresa el valor del funko")));
-    cantidad = parseInt(prompt("Ingresa la cantidad del funko"));
-    imagen = prompt("Indicar link de imagen");
-    fecha = new Date().toLocaleDateString();
-    let productosFunkosAgregar = new Funko(id,nombre,valor,cantidad,imagen,fecha);
-    productosFunkos.push(productosFunkosAgregar);
-};
-let eliminarFunkoArray = () => {
-    let nombreFunko = capitalizar(prompt("Indica el nombre del funko").toLowerCase().trim());
-    let funkoSome = productosFunkos.some((arreglo) => arreglo.nombre === nombreFunko);
-    if(!funkoSome){
-        window.alert("Funko no encontrado");
-    }else{
-        let funkoMap = productosFunkos.map((array) => array.nombre);
-        let funkoIndex = funkoMap.indexOf(nombreFunko);
-        productosFunkos.splice(funkoIndex,1);
-    }
-};
-let modificarFunkoArray = () => {
-    let nombreFunko = capitalizar(prompt("Indica el nombre del funko").toLowerCase().trim());
-    let funkoBoolean = productosFunkos.some((el) => el.nombre === nombreFunko);
-    if(!funkoBoolean){
-        window.alert("No se encuentra el funko");
-    }else{
-        let funkoMap = productosFunkos.map((array) => array.nombre);
-        let funkoIndex = funkoMap.indexOf(nombreFunko);
-          
-        productosFunkos[funkoIndex]["nombre"] = capitalizar(prompt("Ingresa el nombre del funko").toLowerCase().trim());
-        productosFunkos[funkoIndex]["valor"] = Math.round(parseFloat(prompt("Ingresa el valor del funko")));
-        productosFunkos[funkoIndex]["cantidad"] = parseInt(prompt("Ingresa la cantidad del funko"));
-        productosFunkos[funkoIndex]["imagen"] = prompt("Indicar link de imagen");
-    };
-};   
-let ubicarFunko = (nombreFunko) => {
-}
-let mostrarUnFunkoArray = () => {
-    let nombreFunko = capitalizar((prompt("Indica el nombre del funko").toLowerCase().trim()));
-    let funkoBoolean = productosFunkos.some((el) => el.nombre === nombreFunko);
-    if(!funkoBoolean){
-        window.alert("No se encuentra el funko");
-    }else{
-        let funkoMap = productosFunkos.map((array) => array.nombre);
-        let funkoIndex = funkoMap.indexOf(nombreFunko);
-        let findFunko = productosFunkos.find((array) => array.id == (funkoIndex+1));
-        console.log("Funko:\n");
-        for(const valor in findFunko){
-            console.log(findFunko[valor]);
-        }
-    } 
-};
-let total = () => {
-    let acumuluador = 0;
-    acumuluador = productosFunkos.reduce((acumulador,elemento) => acumulador+(elemento.valor*elemento.cantidad),0)
-    console.log(`El total de los productos es ${acumuluador}`);
-}
-*/
-
 let mostrarTodosFunkos = (array,contenedor) => {   
 
-    let arrayFunkos = JSON.parse(sessionStorage.getItem(array));
-    console.log(arrayFunkos);
+    let arrayFunkos = recuperarSession(array);
 
     arrayFunkos = arrayFunkos || array;
 
-    let stringFunko = '';
+    stringFunko = '';
 
     arrayFunkos.forEach((producto) => {
-        
-        const { id:funkoId, 
-            nombre:funkoNombre, 
-            valor:funkoValor, 
-            cantidad:funkoCantidad,
-            imagen:funkoImagen} = producto;
-
-        stringFunko += `
-        <div class="card" style="width: 21rem;">
-            <img src="${funkoImagen}" class="card-img-top" alt="${funkoNombre}">
-                <div class="card-body">
-                    <h3 class="card-title">${funkoNombre}</h5>
-                    <span class="card-text">Stock: ${funkoCantidad}</span>
-                    <p class="card-text">Valor: ${funkoValor}</p>
-                    <a href="#" onclick='agregarCarrito(${funkoId})' class="btn btn-primary">Añadir al carro</a>
-                </div>
-      </div>
-      `
+        mostrarCard(producto);
     });
 
     contenedor.innerHTML = stringFunko;
+}
+
+const mostrarCard = (producto) => {
+    const { id:funkoId, 
+        nombre:funkoNombre, 
+        valor:funkoValor, 
+        cantidad:funkoCantidad,
+        imagen:funkoImagen} = producto;
+
+    stringFunko += `
+    <div class="card" style="width: 21rem;">
+        <img src="${funkoImagen}" class="card-img-top" alt="${funkoNombre}">
+            <div class="card-body">
+                <h3 class="card-title">${funkoNombre}</h5>
+                <span class="card-text">Stock: ${funkoCantidad}</span>
+                <p class="card-text">Valor: ${funkoValor}</p>
+                <a href="#" onclick='agregarCarrito(${funkoId})' class="btn btn-primary">Añadir al carro</a>
+            </div>
+  </div>
+  `
 }
 
 /* Funciones clase carrito *
 ---------------------------------------------------------------------------------------------*/
 const agregarCarrito = (id) => {
     
-    const arrayFunkos = JSON.parse(sessionStorage.getItem(listaProductos));
-    const carroVisita = JSON.parse(localStorage.getItem(carritoStorageVisita));
+    console.log(listaProductos);
+    const arrayFunkos = recuperarSession(listaProductos)
+    const carroVisita = recuperarLocal(carritoStorageVisita) 
+    console.log(arrayFunkos);
 /*-------------------------------------------------------&& - || - ? -------------------------------------------------------*/    
     if(!id){
         window.alert('id no definida');
@@ -252,33 +184,36 @@ const agregarCarrito = (id) => {
 /*-------------------------------------------------------&& - || - ? -------------------------------------------------------*/
     if(producto){
         let funkoCarrito = new Carrito(producto.id,producto.nombre,producto.valor,1);
-
-            if(!carroVisita){
-                carritoFunkos.push(funkoCarrito); 
-                localStorage.setItem(carritoStorageVisita,JSON.stringify(carritoFunkos));
-
-            }else{
-                if(carroVisita.some((el) => el.id === id)){
-                    const funkoFind = carroVisita.find((el) => el.id === id);
-                    carritoFunkos = carroVisita.filter((el) => el.id !== funkoFind.id);
-                    carritoFunkos.push(new Carrito(funkoFind.id,funkoFind.nombre,funkoFind.valor,funkoFind.cantidad+1));
-     
-                    localStorage.setItem(carritoStorageVisita,JSON.stringify(carritoFunkos));
-
-                 }else{
-                     carritoFunkos.push(funkoCarrito); 
-                     localStorage.setItem(carritoStorageVisita,JSON.stringify(carritoFunkos));
-                 }
-            }
+        verificadorExistenciaProductoCarrito(id,carroVisita,funkoCarrito);      
     }  
 /*-------------------------------------------------------&& - || - ? -------------------------------------------------------*/ 
     console.log(carritoFunkos);
     console.log(JSON.parse(localStorage.getItem(carritoStorageVisita)));
 };
 
+const verificadorExistenciaProductoCarrito = (id,carroVisita,funkoCarrito) => {
+    if(!carroVisita){
+        carritoFunkos.push(funkoCarrito); 
+        localStorage.setItem(carritoStorageVisita,JSON.stringify(carritoFunkos));
+
+    }else{
+        if(carroVisita.some((el) => el.id === id)){
+            const funkoFind = carroVisita.find((el) => el.id === id);
+            carritoFunkos = carroVisita.filter((el) => el.id !== funkoFind.id);
+            carritoFunkos.push(new Carrito(funkoFind.id,funkoFind.nombre,funkoFind.valor,funkoFind.cantidad+1));
+
+            localStorage.setItem(carritoStorageVisita,JSON.stringify(carritoFunkos));
+
+         }else{
+             carritoFunkos.push(funkoCarrito); 
+             localStorage.setItem(carritoStorageVisita,JSON.stringify(carritoFunkos));
+         }
+    }
+}
+
 const mostrarCarrito = () => {
 
-    let carritoVisitaLocal = JSON.parse(localStorage.getItem(carritoStorageVisita));
+    let carritoVisitaLocal = recuperarLocal(carritoStorageVisita);
 
     let acumulador = '';
     let iterador = 1;
@@ -309,7 +244,7 @@ const mostrarCarrito = () => {
 }
 
 const eliminar = (id) => {
-    const carroVisita = JSON.parse(localStorage.getItem(carritoStorageVisita))
+    const carroVisita = recuperarLocal(carritoStorageVisita)
 
     const funkoEncontrado = carroVisita.find((el) => el.id === id);
     
@@ -340,7 +275,7 @@ const eliminar = (id) => {
 }
 
 const limpiarArrayLocalStorage = (array) => {
-    let arrayExtraido = JSON.parse(localStorage.getItem(array));
+    let arrayExtraido = recuperarLocal(array);
 
     !arrayExtraido.length && localStorage.removeItem(array),carritoFunkos = [];     
 }
@@ -364,12 +299,6 @@ const masTarde = (id) => {
 }
 */
 
-const busqueda = () => {
-}
-    
-const modificar = () => {
-}
-
 const totalCarrito = () =>{
 }
 
@@ -377,10 +306,6 @@ const totalCarrito = () =>{
 ----------------------------------------------------------------------*/
 let handlerEvent = (e) =>{
     const arrayFunkosEvent = JSON.parse(sessionStorage.getItem(listaProductos));
-    /* isNan(e.target.value){
-    e.preventdefault();
-    }
-    */
     
     const filtrado = e.target.value;
 
@@ -393,32 +318,4 @@ inputSearch.addEventListener('input', handlerEvent);
 
 /*6. Main
 ----------------------------------------------------------------------*/
-let agregarMas = "";
-let accion = "";
-let cantidadFunkoAgregar = '';
-
-let operaciones = (accion) =>{
-    switch(accion){
-        case '1':
-            agregarFunkoArray(capitalizar);
-        break;
-        case '2':
-            mostrarTodosFunkos();
-        break;
-        case '0':
-            //Nada
-        break;
-        default:
-            window.alert("Dato incorrecto");
-        break;
-    }
-}
-
-/*
-do{
-    accion = prompt('Indique el numero de la opción: 1) Agregar\n 2)Mostrar todos 0)salir');
-    operaciones(accion);
-}while(accion !== '0' );
-*/
-
 mostrarTodosFunkos(listaProductos,productosHTML);
