@@ -2,7 +2,6 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-size: 62.5%;
 }
 
 /* Color Theme Swatches in RGBA - AdobeColor
@@ -13,37 +12,20 @@ Naranja .on*arte---marketplace-4-rgba { color: rgba(216, 53, 17, 1); }
 Piel .on*arte---marketplace-5-rgba { color: rgba(216, 103, 78, 1); }
 */
 
-h1{
-    font-size: 4rem;
-}
-
-h2{
-    font-size: 3rem;
-}
-
-h3{
-    font-size: 2.5rem;
-}
-
-p,ul,li,a,label,input,table,tr,th,span{
-    font-size: 1.6rem;
-    margin-bottom: 0;
-}
-
-a.btn-primary,a.navbar-brand{
-    font-size: 1.6rem;
-}
-
 i{
-    font-size: 2em;
+    font-size: 16px;
+}
+
+a > i{
+    font-size: 25px;
 }
 
 .contactoIndex{
     border-radius: 15px;
     background-color: grey;
     color: white;
-    font-size: 3rem;
-    line-height: 1em;
+    font-size: 1rem;
+    line-height: 1.6em;
     width: 150px;
     opacity: 0.5;
     text-align: center;
@@ -54,7 +36,8 @@ i{
     z-index: 99;
     
     display:grid;
-    align-content: center;
+    align-items: end;
+    justify-content: center;
 }
 
 .contactoIndex:hover{

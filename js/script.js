@@ -18,6 +18,14 @@ let productosHTML = document.getElementById('productosIndex');
 let publicidadHTML = document.getElementById('publicidadIndex');
 let inputSearch = document.getElementById('input-search');
 let contenedorCarrito = document.getElementById('contenedorCarrito');
+let modalIndex = document.getElementById('exampleModal');
+let containerListadoMonedas = document.getElementById('containerListadoMonedas');
+
+const spinner = `<div class="d-flex justify-content-center m-auto">
+<div class="spinner-border" role="status">
+  <span class="visually-hidden">Loading...</span>
+</div>
+</div>`
 
 //localStorage y sessionStorage
 const carritoStorageVisita = 'carritoVisita';
@@ -116,6 +124,39 @@ let productosFunkos = [{
 
 guardarSession(listaProductos,JSON.stringify(productosFunkos));
 
+/* Promise, fetch y aync await
+--------------------------------------------------------------------------*/
+let productosPromesa = new Promise( (resolve,rejected) => {
+    return setTimeout(()=>{
+        !recuperarSession(listaProductos).length ? rejected([{
+            id:1,
+            nombre: "America Chavez",
+            valor: 99999,
+            cantidad: 99,
+            imagen: 'img/productos/AmericaChavez.webp'
+        }]) : resolve(recuperarSession(listaProductos))
+    },6000)
+} )
+
+console.log(productosPromesa)
+
+let productosFunkosPromesa = ''
+let fetchMonedas = ''
+let acumuladorMonedas = ''
+let arrayMonedasRequeridas = ['dolar','euro','uf','utm']
+let contadorInicial = 0;
+let contadorFinal = 4;
+let monedaArray = []
+let obtenerMonedas = async () => {
+    fetchMoneda = await fetch('https://mindicador.cl/api')
+    let monedaJson = await fetchMoneda.json();
+        for(let i = 0 ; i < contadorFinal ; i++){
+            acumuladorMonedas += `<tr><td>${monedaJson[arrayMonedasRequeridas[i]].codigo}</td><td>${monedaJson[arrayMonedasRequeridas[i]].valor}</td></tr>`
+        }
+        containerListadoMonedas.innerHTML = acumuladorMonedas
+    }
+
+obtenerMonedas()
 /*3. Variables default 
 -------------------------------------------------------------------- */
 let id = '';
@@ -128,10 +169,29 @@ let stringFunko = '';
 
 /*4. Funciones
 ---------------------------------------------------------------------------------------- */
+/* Promesas
+------------------------------------------------------------*/
+const getProductos = () => {
+    productosHTML.innerHTML=spinner;
+    productosPromesa
+    .then((res) => {
+        productosFunkosPromesa = [...res]
+            mostrarTodosFunkos(productosFunkosPromesa,productosHTML)
+        })
+    .catch((rej)=>{
+        productosHTML.innerHTML=spinner;
+        productosFunkosPromesa = [...rej]
+            mostrarTodosFunkos(productosFunkosPromesa,productosHTML)
+    }) 
+    .finally(()=>{
+        console.log('Promesa completada')
+    })   
+}
+
 /* Funciones clase funko *
 ----------------------------------------------------------- */
-let mostrarTodosFunkos = (array,contenedor) => {   
-
+let mostrarTodosFunkos = (array,contenedor) => {  
+    
     let arrayFunkos = recuperarSession(array);
 
     arrayFunkos = arrayFunkos || array;
@@ -153,10 +213,10 @@ const mostrarCard = (producto) => {
         imagen:funkoImagen} = producto;
 
     stringFunko += `
-    <div class="card" style="width: 21rem;">
+    <div class="card" style="width: 15rem;">
         <img src="${funkoImagen}" class="card-img-top" alt="${funkoNombre}">
             <div class="card-body">
-                <h3 class="card-title">${funkoNombre}</h5>
+                <h3 class="card-title">${funkoNombre}</h3>
                 <span class="card-text">Stock: ${funkoCantidad}</span>
                 <p class="card-text">Valor: ${funkoValor}</p>
                 <a href="#" onclick='agregarCarrito(${funkoId})' class="btn btn-primary">Añadir al carro</a>
@@ -169,44 +229,51 @@ const mostrarCard = (producto) => {
 ---------------------------------------------------------------------------------------------*/
 const agregarCarrito = (id) => {
     
-    console.log(listaProductos);
     const arrayFunkos = recuperarSession(listaProductos)
     const carroVisita = recuperarLocal(carritoStorageVisita) 
-    console.log(arrayFunkos);
-/*-------------------------------------------------------&& - || - ? -------------------------------------------------------*/    
+
     if(!id){
         window.alert('id no definida');
         console.log('id no definida');
         return
     }
-/*-------------------------------------------------------&& - || - ? -------------------------------------------------------*/
+
     const producto = arrayFunkos.find((el) => el.id === id);
-/*-------------------------------------------------------&& - || - ? -------------------------------------------------------*/
+
     if(producto){
-        let funkoCarrito = new Carrito(producto.id,producto.nombre,producto.valor,1);
+
+        const {id:idProducto,nombre:nombreProducto,valor:valorProducto} = producto
+
+        let funkoCarrito = new Carrito(idProducto,nombreProducto,valorProducto,1);
         verificadorExistenciaProductoCarrito(id,carroVisita,funkoCarrito);      
     }  
-/*-------------------------------------------------------&& - || - ? -------------------------------------------------------*/ 
-    console.log(carritoFunkos);
-    console.log(JSON.parse(localStorage.getItem(carritoStorageVisita)));
 };
 
 const verificadorExistenciaProductoCarrito = (id,carroVisita,funkoCarrito) => {
+    console.log('carroVisita')
+    console.log(carroVisita)
     if(!carroVisita){
         carritoFunkos.push(funkoCarrito); 
         localStorage.setItem(carritoStorageVisita,JSON.stringify(carritoFunkos));
-
+        alertAgregadoCarrito()
     }else{
         if(carroVisita.some((el) => el.id === id)){
-            const funkoFind = carroVisita.find((el) => el.id === id);
-            carritoFunkos = carroVisita.filter((el) => el.id !== funkoFind.id);
-            carritoFunkos.push(new Carrito(funkoFind.id,funkoFind.nombre,funkoFind.valor,funkoFind.cantidad+1));
+            const funkoFind = carroVisita.find((el) => el.id === id); 
+
+            const {id:idProducto,nombre:nombreProducto,valor:valorProducto,cantidad:cantidadProducto} = funkoFind
+
+            carritoFunkos = carroVisita.filter((el) => el.id !== idProducto); 
+            carritoFunkos.push(new Carrito(idProducto,nombreProducto,valorProducto,cantidadProducto+1));
 
             localStorage.setItem(carritoStorageVisita,JSON.stringify(carritoFunkos));
-
+            console.log('carritoStorageVisita')
+            alertAgregadoCarrito()
          }else{
+             carritoFunkos = recuperarLocal(carritoStorageVisita) || [];
              carritoFunkos.push(funkoCarrito); 
              localStorage.setItem(carritoStorageVisita,JSON.stringify(carritoFunkos));
+             console.log('carritoStorageVisita')
+             alertAgregadoCarrito()
          }
     }
 }
@@ -233,8 +300,7 @@ const mostrarCarrito = () => {
         <td>${funkoCantidad}</td>
         <td>${funkoValor} </td>
         <td>${funkoValor*funkoCantidad}</td>
-        <td><button onclick='eliminar(${funkoId})'><i class="fa-solid fa-trash"></i></button>|<button onclick='masTarde(${funkoId})'>
-        <i class="fa-regular fa-clock"></i></button></td>
+        <td><button onclick='eliminar(${funkoId})'><i class="fa-solid fa-trash"></i></td>
         </tr>
         `
         iterador++;
@@ -279,9 +345,6 @@ const limpiarArrayLocalStorage = (array) => {
 
     !arrayExtraido.length && localStorage.removeItem(array),carritoFunkos = [];     
 }
-
-const arrayVisitaMasTarde = () => {}
-/*
 const masTarde = (id) => {
     const carroVisita = JSON.parse(localStorage.getItem(carritoStorageVisita));
     const carromasTarde = JSON.parse(localStorage.getItem(carritoStorageMasTarde));
@@ -297,9 +360,39 @@ const masTarde = (id) => {
     mostrarCarrito();
         
 }
-*/
 
 const totalCarrito = () =>{
+}
+const alertAgregadoCarrito = () => {
+    Swal.fire({
+        
+        title: 'Agregado',
+        text: 'Agregado con exito al carrito',
+        icon:'success',
+        
+        showCancelButton: true,
+        confirmButtonText: 'Ir al carrito',
+        cancelButtonText: 'Seguir agregando',
+
+        background: '#ffff',
+        color: '#000f'
+    })
+    .then((promesa)=>{
+        console.log(promesa)
+        if(promesa.isConfirmed){
+            modalIndex.addEventListener('shown.bs.modal', function () {
+                    
+              })
+        }
+        if(promesa.isDismissed){
+            Swal.fire({
+                title: 'De vuelta',
+                text: 'Volviendo a home',
+                timer: 1000,
+                showConfirmButton: false
+            })
+        }
+     })
 }
 
 /*5. Eventos
@@ -318,4 +411,4 @@ inputSearch.addEventListener('input', handlerEvent);
 
 /*6. Main
 ----------------------------------------------------------------------*/
-mostrarTodosFunkos(listaProductos,productosHTML);
+getProductos()
